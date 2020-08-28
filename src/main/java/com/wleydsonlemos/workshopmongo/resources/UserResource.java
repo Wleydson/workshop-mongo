@@ -1,28 +1,34 @@
 package com.wleydsonlemos.workshopmongo.resources;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.wleydsonlemos.workshopmongo.domain.User;
+import com.wleydsonlemos.workshopmongo.dto.UserDTO;
 import com.wleydsonlemos.workshopmongo.service.UserService;
 
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 @RestController
 @RequestMapping(value = "/users")
 public class UserResource {
 
-	@Autowired
-	private UserService service;
+	private final UserService service;
+	private final ModelMapper modelMapper;
 	
 	@GetMapping
-	public ResponseEntity<List<User>>  findAll(){
+	public ResponseEntity<List<UserDTO>>  findAll(){
 		List<User> users = service.findAll();
-
-		return ResponseEntity.ok().body(users);
+		List<UserDTO> usersDTO = users.stream().map(user -> modelMapper.map(user, UserDTO.class)).collect(Collectors.toList());
+		
+		return ResponseEntity.ok().body(usersDTO);
 	}
 	
 }
