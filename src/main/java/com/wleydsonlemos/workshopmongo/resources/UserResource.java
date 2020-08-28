@@ -1,25 +1,28 @@
 package com.wleydsonlemos.workshopmongo.resources;
 
-import java.util.Arrays;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.wleydsonlemos.workshopmongo.domain.User;
+import com.wleydsonlemos.workshopmongo.service.UserService;
 
 @RestController
 @RequestMapping(value = "/users")
 public class UserResource {
 
+	@Autowired
+	private UserService service;
+	
 	@GetMapping
 	public ResponseEntity<List<User>>  findAll(){
-		User user1 = User.builder().id("1").name("test1").email("1@email.com").build();
-		User user2 = User.builder().id("2").name("test2").email("2@email.com").build();
+		List<User> users = service.findAll();
 
-		return ResponseEntity.ok().body(Arrays.asList(user1, user2));
+		return ResponseEntity.ok().body(users);
 	}
 	
 }
