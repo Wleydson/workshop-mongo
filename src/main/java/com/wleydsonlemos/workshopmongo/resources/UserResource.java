@@ -17,6 +17,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.wleydsonlemos.workshopmongo.domain.User;
 import com.wleydsonlemos.workshopmongo.dto.UserDTO;
+import com.wleydsonlemos.workshopmongo.dto.insertUserDTO;
 import com.wleydsonlemos.workshopmongo.service.UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -45,7 +46,7 @@ public class UserResource {
 	}
 	
 	@PostMapping
-	public ResponseEntity<Void>  findById(@RequestBody UserDTO dto){
+	public ResponseEntity<Void>  findById(@RequestBody insertUserDTO dto){
 		User user = modelMapper.map(dto, User.class);
 		user = service.insert(user);
 		
