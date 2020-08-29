@@ -20,7 +20,12 @@ public class UserService {
 		return repository.findAll();
 	}
 	
-	public User findById(String id){
-		Optional<User> user = repository.findById(id);  
-		return user.orElseThrow(() -> new ObjectNotFoundException("Object not found")); 	}
+	public User findById(String id) {
+		Optional<User> user = repository.findById(id);
+		return user.orElseThrow(() -> new ObjectNotFoundException("Object not found"));
+	}
+	
+	public User insert(User entity) {
+		return repository.insert(entity);
+	}
 }
