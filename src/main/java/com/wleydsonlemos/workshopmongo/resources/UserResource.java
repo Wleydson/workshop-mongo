@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,7 +32,7 @@ public class UserResource {
 	private final ModelMapper modelMapper;
 	
 	@GetMapping
-	public ResponseEntity<List<UserDTO>>  findAll(){
+	public ResponseEntity<List<UserDTO>> findAll(){
 		List<User> users = service.findAll();
 		List<UserDTO> usersDTO = users.stream().map(user -> modelMapper.map(user, UserDTO.class)).collect(Collectors.toList());
 		
@@ -39,14 +40,14 @@ public class UserResource {
 	}
 	
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<UserDTO>  findById(@PathVariable String id){
+	public ResponseEntity<UserDTO> findById(@PathVariable String id){
 		User user = service.findById(id);
 		
 		return ResponseEntity.ok().body( modelMapper.map(user, UserDTO.class));
 	}
 	
 	@PostMapping
-	public ResponseEntity<Void>  findById(@RequestBody insertUserDTO dto){
+	public ResponseEntity<Void> insertUser(@RequestBody insertUserDTO dto){
 		User user = modelMapper.map(dto, User.class);
 		user = service.insert(user);
 		
@@ -55,8 +56,18 @@ public class UserResource {
 	}
 	
 	@DeleteMapping(value = "/{id}")
-	public ResponseEntity<UserDTO>  deleteById(@PathVariable String id){
+	public ResponseEntity<UserDTO> deleteById(@PathVariable String id){
 		service.delete(id);
+		
+		return ResponseEntity.noContent().build();
+	}
+	
+	@PutMapping(value = "/{id}")
+	public ResponseEntity<UserDTO> updateUser(@PathVariable String id, @RequestBody insertUserDTO dto){
+		User user = modelMapper.map(dto, User.class);
+		user.setId(id);
+		
+		service.update(user);
 		
 		return ResponseEntity.noContent().build();
 	}
