@@ -1,5 +1,9 @@
 package com.wleydsonlemos.workshopmongo.resources;
 
+import static com.wleydsonlemos.workshopmongo.util.Util.decodeParam;
+import static com.wleydsonlemos.workshopmongo.util.Util.convertDate;
+
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
@@ -13,8 +17,6 @@ import com.wleydsonlemos.workshopmongo.domain.Post;
 import com.wleydsonlemos.workshopmongo.service.PostService;
 
 import lombok.RequiredArgsConstructor;
-
-import static com.wleydsonlemos.workshopmongo.resources.util.URL.decodeParam;
 
 @RequiredArgsConstructor
 @RestController
@@ -36,6 +38,21 @@ public class PostResource {
 		List<Post> posts = service.findByTitle(titleDecode);
 		
 		return ResponseEntity.ok().body( posts );
+	}
+	
+	@GetMapping(value="/search")
+ 	public ResponseEntity<List<Post>> searchParam(
+ 			@RequestParam(value="text", defaultValue="") String text,
+ 			@RequestParam(value="minDate", defaultValue="") String minDate,
+ 			@RequestParam(value="maxDate", defaultValue="") String maxDate
+ 			) {
+		
+		text = decodeParam(text);
+		Date min = convertDate(minDate, new Date(0L));
+		Date max = convertDate(maxDate, new Date());
+		
+		List<Post> list = service.searchParam(text, min, max);
+		return ResponseEntity.ok().body(list);
 	}
 	
 }

@@ -1,5 +1,8 @@
 package com.wleydsonlemos.workshopmongo.service;
 
+import static com.wleydsonlemos.workshopmongo.util.Util.plusDay;
+
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,5 +28,10 @@ public class PostService {
 		return repository.findByTitleContainingIgnoreCase(title);
 	}
 	
+
+	public List<Post> searchParam(String text, Date minDate, Date maxDate){
+		maxDate = plusDay(maxDate, 1);
+		return repository.search(text, minDate, maxDate);
+	}
 	
 }
