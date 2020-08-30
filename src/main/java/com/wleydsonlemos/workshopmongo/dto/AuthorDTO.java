@@ -2,6 +2,8 @@ package com.wleydsonlemos.workshopmongo.dto;
 
 import java.io.Serializable;
 
+import com.wleydsonlemos.workshopmongo.domain.User;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,10 +13,18 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class insertUserDTO implements Serializable{
+public class AuthorDTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+
+	private String id;
 	
 	private String name;
-	private String email;
+
+	public AuthorDTO(User user) {
+		this.id = user.getId();
+		this.name = user.getName();
+	}
+	
+	
 }
