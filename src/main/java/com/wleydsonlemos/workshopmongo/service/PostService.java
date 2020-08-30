@@ -1,5 +1,9 @@
 package com.wleydsonlemos.workshopmongo.service;
 
+import static com.wleydsonlemos.workshopmongo.util.Util.plusDay;
+
+import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,5 +24,14 @@ public class PostService {
 		return post.orElseThrow(() -> new ObjectNotFoundException("Post not found"));
 	}
 	
+	public List<Post> findByTitle(String title) {
+		return repository.findByTitleContainingIgnoreCase(title);
+	}
+	
+
+	public List<Post> searchParam(String text, Date minDate, Date maxDate){
+		maxDate = plusDay(maxDate, 1);
+		return repository.search(text, minDate, maxDate);
+	}
 	
 }
